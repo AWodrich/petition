@@ -26,12 +26,20 @@ app.post('/petition', (req, res) => {
     const last = req.body.last;
     const signature = 'sig comes here';
     database.signPetition(first, last, signature)
-    res.render('petition', {
+    // res.redirect('/signed')
+
+    res.render('thank-you', {
         layout: 'main'
     })
 })
 
 app.get('/signed', (req, res) => {
+    res.render('thank-you', {
+        layout: 'main'
+    })
+})
+
+app.get('/all', (req, res) => {
     res.render('signed', {
         layout: 'main'
     })

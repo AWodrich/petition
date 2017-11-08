@@ -1,10 +1,15 @@
 <div id="template">
-    <h1>description text</h1>
-    <form class="" action='petition' method="post">
+    <p id="text">
+        Members of the European Parliament personally choose their assistants and can ask to terminate the contract if and when they so wish.
+        This is why victims of sexual harassment nearly never report incidents of concern.
+        This is inacceptable! <br>Sign this petition to <br><span>Ban sexual harassment in the European Parliament!<span></p>
+        <img src="/public/euparliament.jpg" alt="">
+    <form class="user" action='petition' method="post">
         <input id="first" type="text" placeholder="Enter first name" name="first">
         <input id="last" type="text" placeholder="Enter last name" name="last">
         <input type="hidden" name="img">
-        <button>Submit</button>
+        <button id="submit">Submit</button>
     </form>
-    <canvas id="canv" width="400" height="100"></canvas>
+    <p id="sign">Please sign:</p>
+    <canvas id="canvas" width="600" height="150"></canvas>
 </div>

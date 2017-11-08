@@ -1,7 +1,125 @@
 canvas {
-    border: 1px solid black;
+    left: 33%;
+    top: -600px;
+    position: relative;
+    border: 4px dotted black;
+    z-index: 3;
+    background-color: white;
 }
 
 h1 {
-    color: green;
+    top: 2px;
+    position: relative;
+    color: black;
+    text-align: center;
+    z-index: 3;
+}
+
+#sign {
+    position: relative;
+    top: -580px;
+    left: 45%;
+    font-size: 30px;
+    z-index: 2;
+    font-weight: bold;
+}
+
+#text {
+    position: relative;
+    color: black;
+    top: 230px;
+    font-size: 35px;
+    font-weight: bold;
+    z-index: 3;
+    text-align: center;
+    line-height: 50px;
+}
+
+#thank-you-text {
+    position: relative;
+    color: black;
+    top: 230px;
+    font-size: 35px;
+    font-weight: bold;
+    z-index: 3;
+    text-align: center;
+    line-height: 50px;
+}
+
+#layout {
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#template {
+    top:-230px;
+    position: relative;
+    padding: 0.5em;
+    width: 100%;
+    z-index: 2;
+}
+
+footer {
+    position: relative;
+    padding: 0.5em;
+    width: 100%;
+}
+
+nav {
+    position: relative;
+    padding: 0.5em;
+    width: 100%;
+}
+
+img {
+    top: -100px;
+    position: relative;
+    width: 98%;
+    height: auto;
+    z-index: 1;
+    filter:opacity(30%);
+    left: 15px;
+    /*right: 20px;*/
+}
+
+.user {
+    position: relative;
+    left: 40%;
+    top: -580px;
+    z-index: 3;
+}
+
+input {
+    border: 1px solid black;
+    height: 30px;
+    width: 150px;
+    text-align: center;
+    font-size: 15px;
+
+}
+
+#submit {
+    border: 1px solid black;
+    width: 70px;
+    height: 30px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+#goToAll {
+    position: relative;
+    left: 40%;
+    text-align: center;
+    top: 250px;
+    height: 30px;
+    width: 400px;
+    font-size: 18px;
+}
+
+span {
+    font-weight:bolder;
+    text-decoration: underline;
 }
