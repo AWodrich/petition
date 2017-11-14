@@ -4,34 +4,41 @@ const pw = require('./passwords.js');
 var db = spicedPg(`postgres:${secret.username}:${secret.password}@localhost:5432/myPetition`);
 
 
-exports.signPetition = (first, last, signature) => {
-  return db.query(`INSERT INTO signatures (first, last, signature) VALUES ($1, $2, $3)`,
-  [first, last, signature]
-  ).then((results) => {
-    //   console.log('THIS IS THE SIGNATURE', signature);
-    //   console.log('RESULTS WHEN SIGNED', results);
+exports.signPetition = (signature, userId) => {
+    var q = `INSERT INTO signatures (signature, user_id) VALUES ($1, $2) RETURNING id`;
+    var params = [signature, userId];
+
+  return db.query(q, params)
+  .then((results) => {
+      console.log('results from the query thing', results.rows);
+      return results.rows[0].id
   }).catch((err) => {
       console.log(err);
   });
 };
 
 exports.registerUser = (first, last, email, hashedPassword) => {
-  return db.query(`INSERT INTO users (first, last, email, hashed_password) VALUES ($1, $2, $3, $4) RETURNING id`,
-  [first, last, email, hashedPassword]
-  ).then(results => {
-    //   console.log('3=====results from registered user', results.rows);
-      return results.rows
-  }).catch(err => {
-      console.log(err);
-  });
+    var q = `INSERT INTO users (first, last, email, hashed_password)
+            VALUES ($1, $2, $3, $4)
+            RETURNING id`;
+    var params = [first, last, email, hashedPassword];
+    return db.query(q, params)
+    .then(results => {
+        return results.rows[0].id
+    }).catch(err => {
+        console.log(err);
+    });
 };
 
 
-exports.loginUser = (email, password, id) => {
-    const q = `SELECT email, hashed_password, id, first, last FROM users WHERE users.email = '${email}'`;
-    return db.query(q).then(result => {
-        // console.log('id', id);
-        console.log(result.rows[0])
+exports.loginUser = (email, password) => {
+    var q = `SELECT email, hashed_password, users.id, users.first, signatures.id AS sigId, users.last
+            FROM users
+            LEFT JOIN signatures
+            ON users.id = signatures.user_id
+            WHERE users.email = $1`;
+    return db.query(q,[email]).then(result => {
+        console.log('inside database loginUser', result.rows);
         return result.rows[0];
     }).catch(err => {
         console.log(err);
@@ -40,9 +47,9 @@ exports.loginUser = (email, password, id) => {
 
 exports.addingInfo = (id, city, age, url) => {
     var q = `SELECT users.id AS id, user_profiles.id AS id
-        FROM users
-        JOIN user_profiles
-        ON users.id = user_profiles.user_id`;
+            FROM users
+            JOIN user_profiles
+            ON users.id = user_profiles.user_id`;
     return db.query(q)
     .then(results => {
         var q = `INSERT INTO user_profiles (user_id, city, age, url) VALUES ($1, $2, $3, $4)`;

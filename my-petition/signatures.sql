@@ -4,8 +4,7 @@ DROP TABLE IF EXISTS user_profiles;
 
 CREATE TABLE signatures (
     id SERIAL PRIMARY KEY,
-    first VARCHAR(300) not null,
-    last VARCHAR(300) not null,
+    user_id INTEGER,
     signature text not null,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

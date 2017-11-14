@@ -44,13 +44,12 @@ app.get('/', (req, res) => {
 })
 
 app.get('/petition', (req, res) => {
-
-    // let first = req.session.user.first;
-    // let last = req.session.user.last;
+    let first = req.session.user.first;
+    let last = req.session.user.last;
     res.render('petition', {
         layout: 'main',
-        // first,
-        // last
+        first,
+        last
     })
 })
 
@@ -60,25 +59,30 @@ app.get('/registration', (req, res) => {
     })
 })
 
+app.get('/logout', (req, res) => {
+    req.session =null;
+    res.redirect('/')
+})
+
 app.post('/registration', (req, res) => {
     let first = req.body.first;
     let last = req.body.last;
     let password = req.body.password;
     let email = req.body.email;
 
-    pw.hashPassword(password).then((hashedPw) => {
-        database.registerUser(first, last, email, hashedPw).then((userId) => {
+    pw.hashPassword(password).then(hashedPw => {
+        database.registerUser(first, last, email, hashedPw).then(id => {
             req.session.user = {
                 first,
                 last,
                 email,
-                id: userId
+                id
             }
             res.redirect('/profile');
-        }).catch((err) => {
+        }).catch(err => {
             console.log(err);
         });
-    }).catch((err) => {
+    }).catch(err => {
         console.log(err);
     })
 })
@@ -92,18 +96,21 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
     var email = req.body.email;
     var password = req.body.password;
-    // var id = req.session.user; //++++++++++++++why dont i have access to is with req.session.id??
+    database.loginUser(email, password).then(userInfo => {
+            pw.checkPassword(password, userInfo.hashed_password).then(doesMatch => {
+                if(doesMatch) {
+                    var first = userInfo.first;
+                    var last = userInfo.last;
+                    var id = userInfo.id;
 
-    database.loginUser(email, password).then(results => {
-        //get id of user and join the tables
-        var first = results.first;
-        var last = results.last;
-        var id = results.id;
-
-            pw.checkPassword(password, results.hashed_password).then(result => {
-                console.log('what is the value of result after checkPassword', result);
-                if(result == true) {
-                    res.render('petition', {
+                    req.session.user = {
+                        first,
+                        last,
+                        email,
+                        id
+                    }
+                    console.log('just set teh session', req.session);
+                    res.render('thank-you', {
                         layout: 'main',
                         first,
                         last
@@ -130,9 +137,12 @@ app.post('/profile', (req, res) => {
     let city = req.body.city;
     let age = req.body.age;
     let url = req.body.url;
-    let id = req.session.user.id[0].id;
+    let id = req.session.user.id;
+
+    console.log('About to create the profile','city:',city,'age:',age,url,id);
+
     if(city || age || url ) {
-        database.addingInfo(id, city, age, url).then(() => {
+        database.addingInfo( id, city, age, url).then(() => {
             res.redirect('/petition')
         });
     } else {
@@ -140,28 +150,28 @@ app.post('/profile', (req, res) => {
     }
 })
 
-app.post('/thanks', (req, res) => {
-    let first = req.body.first;
-    let last = req.body.last;
+app.post('/signPetition', (req, res) => {
+
     let signature = req.body.img;
-    database.signPetition(first, last, signature)
-    res.render('thank-you', {
-        layout: 'main',
-        first: first,
-        last: last,
-        signature: signature
+    database.signPetition(signature, req.session.user.id)
+    .then(signatureId => {
+        req.session.user.signatureId = signatureId;
+        console.log('after running signed petition', req.session);
+        res.redirect('/thank-you')
+
     })
 })
 
 app.get('/all', (req, res) => {
+    console.log('////', req.session.user.first);
     database.getSigners().then(signers => {
-        console.log('!!!!!!!!!!!all signers come here',signers);
         res.render('signed', {
             layout: 'main',
             signers: signers
         })
     })
 })
+
 
 app.get('/signers/:city', (req, res) => {
     console.log('======================');
