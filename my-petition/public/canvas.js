@@ -1,6 +1,7 @@
 
 //Canvas
 var canvas = document.getElementById('canvas');
+console.log('CANVAS', canvas);
 var ctx = canvas.getContext('2d');
 //Variables
 var canvasx = $(canvas).offset().left;
@@ -12,6 +13,10 @@ var tooltype = 'draw';
 
 //Mousedown
 $(canvas).on('mousedown', function(e) {
+    // let sig = canvas.toDataUrl();
+    var canvas = document.getElementById("canvas");
+    var dataURL = canvas.toDataURL();
+    console.log(dataURL);
     console.log('in here now');
     last_mousex = mousex = parseInt(e.clientX-canvasx);
 	last_mousey = mousey = parseInt(e.clientY-canvasy);
@@ -21,6 +26,9 @@ $(canvas).on('mousedown', function(e) {
 //Mouseup
 $(canvas).on('mouseup', function(e) {
     mousedown = false;
+    console.log('++++++++++++++++++++++');
+    var data = canvas.toDataURL()
+    $('input:hidden').val(data)
 });
 
 //Mousemove
@@ -29,7 +37,7 @@ $(canvas).on('mousemove', function(e) {
     mousey = parseInt(e.clientY-canvasy);
     if(mousedown) {
         ctx.beginPath();
-        if(tooltype=='draw') {
+        if(tooltype =='draw') {
             ctx.globalCompositeOperation = 'source-over';
             ctx.strokeStyle = 'black';
             ctx.lineWidth = 3;
@@ -47,3 +55,7 @@ $(canvas).on('mousemove', function(e) {
     //Output
     $('#output').html('current: '+mousex+', '+mousey+'<br/>last: '+last_mousex+', '+last_mousey+'<br/>mousedown: '+mousedown);
 });
+
+//ervey time you draw a line.
+// stop drawning submit, form submit event to set value of hidden tag. to be canvas.toDaqta()
+// then i t will be in req.body.signature

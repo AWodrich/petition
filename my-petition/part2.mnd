@@ -1,0 +1,42 @@
+Part 2
+
+
+*  thank-you page *
+thank you text
+image of signature
+link to go to next page
+
+
+* cookie *
+cookie session middleware
+req.objects
+remember the id of the row of the signature!
+where id equals id take that signature image and send to thankyou page.
+if no signature id, then petition not signed.
+if user has signature id, then user should not sign again.
+express library has cookie middleware.
+cookie-session
+
+cookie:
+key value pair to store in the browser to help indicate sth.
+create a cookie, that indicates to us that user has signed
+can be tampered/manipulated/played with.
+encrypt cookie. so it is much harder to be hacked.
+cookie-session middleware encrypts the cookie when it sends it, and decrypts it when it receives a cookie so it can be read in our server.
+it needs a secret (a string) that is needed to hash
+when we create a cookie, the cookie middleware and the secret are hashing the cookie, so it is difficult to hack it.
+
+this is the configuration of the cookie middleware:
+app.use(cookieSession({
+    secret = 'This is my secret',
+    maxAge: 1000*60*60*24*24 => two weeks;
+}))
+
+set a cookie like this => using req.session....so signatureId is the name we chose for this cookie.
+                        req.session.signatureId = id;
+that is the cookie!
+
+dont store the signature picture in the cookie because the size would exceed what a cookie can store.
+
+
+to see the cookie. open chrome dev tools => application => cookie
