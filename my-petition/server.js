@@ -60,7 +60,7 @@ app.get('/registration', (req, res) => {
 })
 
 app.get('/logout', (req, res) => {
-    req.session =null;
+    req.session = null;
     res.redirect('/')
 })
 
@@ -102,18 +102,24 @@ app.post('/login', (req, res) => {
                     var first = userInfo.first;
                     var last = userInfo.last;
                     var id = userInfo.id;
+                    var city = userInfo.city;
+                    var age = userInfo.age
 
                     req.session.user = {
                         first,
                         last,
                         email,
-                        id
+                        id,
+                        age,
+                        city
                     }
-                    console.log('just set teh session', req.session);
-                    res.render('thank-you', {
-                        layout: 'main',
-                        first,
-                        last
+                    database.getSignature(id).then(sigsIds => {
+                        res.render('thank-you', {
+                            layout: 'main',
+                            first: req.session.user.first,
+                            last: req.session.user.last,
+                            signature: sigsIds[0].signature
+                        })
                     })
                 } else {
                     res.redirect('login')
@@ -139,10 +145,14 @@ app.post('/profile', (req, res) => {
     let url = req.body.url;
     let id = req.session.user.id;
 
-    console.log('About to create the profile','city:',city,'age:',age,url,id);
+    // console.log('About to create the profile','city:',city,'age:',age,url,id);
 
     if(city || age || url ) {
         database.addingInfo( id, city, age, url).then(() => {
+            req.session.user.city = city;
+            req.session.user.age = age;
+            req.session.user.url = url;
+            console.log('new session object', req.session.user);
             res.redirect('/petition')
         });
     } else {
@@ -153,11 +163,11 @@ app.post('/profile', (req, res) => {
 app.post('/signPetition', (req, res) => {
 
     let signature = req.body.img;
-    console.log('signature', signature);
+    // console.log('signature', signature);
     database.signPetition(signature, req.session.user.id)
     .then(signatureId => {
         req.session.user.signatureId = signatureId;
-        console.log('after running signed petition', req.session);
+        // console.log('after running signed petition', req.session);
         res.redirect('/thank-you')
 
     })
@@ -173,22 +183,32 @@ app.get('/all', (req, res) => {
 })
 
 app.get('/thank-you', (req, res) => {
-
-    database.getSignature().then(sigsIds => {
-        console.log('=========sigsIds', sigsIds);
-        
+    console.log('is this the id????', req.session.user.id);
+    let id = req.session.user.id;
+    database.getSignature(id).then(sigsIds => {
         res.render('thank-you', {
             layout: 'main',
             first: req.session.user.first,
             last: req.session.user.last,
-            signature: req.session.user.signature
+            signature: sigsIds[0].signature
         })
     })
 })
 
 
 app.get('/signers/:city', (req, res) => {
-    console.log('======================');
+    var city = req.params.city;
+    database.getSignersCities(city).then(signersCity => {
+        console.log('all users of same city', signersCity);
+        res.render('signers-cities', {
+            layout: 'main',
+            signersCity,
+            city:signersCity[0].city
+        })
+
+    }).catch(err => {
+        console.log(err);
+    })
 })
 
 //=================== setting up server ========================================//

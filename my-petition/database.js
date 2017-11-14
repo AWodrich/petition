@@ -10,7 +10,7 @@ exports.signPetition = (signature, userId) => {
 
   return db.query(q, params)
   .then((results) => {
-      console.log('results from the query thing', results.rows);
+    //   console.log('results from the query thing', results.rows);
       return results.rows[0].id
   }).catch((err) => {
       console.log(err);
@@ -31,6 +31,8 @@ exports.registerUser = (first, last, email, hashedPassword) => {
 };
 
 
+
+
 exports.loginUser = (email, password) => {
     var q = `SELECT email, hashed_password, users.id, users.first, signatures.id AS sigId, users.last
             FROM users
@@ -38,7 +40,7 @@ exports.loginUser = (email, password) => {
             ON users.id = signatures.user_id
             WHERE users.email = $1`;
     return db.query(q,[email]).then(result => {
-        console.log('inside database loginUser', result.rows);
+        // console.log('inside database loginUser', result.rows);
         return result.rows[0];
     }).catch(err => {
         console.log(err);
@@ -64,26 +66,34 @@ exports.addingInfo = (id, city, age, url) => {
         console.log(err);
     })
 }
-
+//===getting user data
 exports.getSigners = () => {
+    //joining table users and user_profiles
+    //in order to get data first, name,age and city
+    //condition: take data where user_id from table a matches with id from table b.
     return db.query(
-        `SELECT first,last FROM signatures`
+        `SELECT users.first,users.last, user_profiles.city, user_profiles.age
+        FROM users
+        JOIN user_profiles
+        ON user_profiles.user_id=users.id`
     ).then(result => {
+        // console.log('getting all users', result.rows);
         return result.rows;
     }).catch(err => {
         console.log(err);
     });
 }
 
-exports.getSignature = () => {
-    var q = `SELECT signatures.signature AS userSig, signatures.user_id AS id, users.id AS id
-            FROM signatures
-            JOIN users
-            ON signatures.user_id = users.id`
-    return db.query(q)
+exports.getSignature = (id) => {
+    var q = `SELECT signatures.signature, signatures.user_id, users.id
+            FROM users
+            JOIN signatures
+            ON signatures.user_id = users.id
+            WHERE users.id = $1`
+    return db.query(q,[id])
     .then(userInfosOnSig => {
         return userInfosOnSig.rows
-        console.log('++++++++getting user info and sig id on thankyou page', userInfosOnSig.rows);
+        // console.log('++++++++getting user info and sig id on thankyou page', userInfosOnSig.rows);
     }).catch(err => {
         console.log(err);
     })
@@ -97,4 +107,19 @@ exports.register = () => {
     }).catch(err => {
         console.log(err);
     });
+}
+
+
+exports.getSignersCities = (city) => {
+    var q = `SELECT user_profiles.city, users.first, users.last, user_profiles.age
+            FROM users
+            LEFT JOIN user_profiles
+            ON user_profiles.user_id = users.id
+            WHERE user_profiles.city = $1`
+    return db.query(q,[city])
+        .then(usersCity => {
+            return usersCity.rows;
+        }).catch(err => {
+            console.log(err);
+        })
 }
