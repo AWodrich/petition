@@ -75,6 +75,20 @@ exports.getSigners = () => {
     });
 }
 
+exports.getSignature = () => {
+    var q = `SELECT signatures.signature AS userSig, signatures.user_id AS id, users.id AS id
+            FROM signatures
+            JOIN users
+            ON signatures.user_id = users.id`
+    return db.query(q)
+    .then(userInfosOnSig => {
+        return userInfosOnSig.rows
+        console.log('++++++++getting user info and sig id on thankyou page', userInfosOnSig.rows);
+    }).catch(err => {
+        console.log(err);
+    })
+}
+
 exports.register = () => {
     return db.query(
         `INSERT first,last, hashedPw FROM users`

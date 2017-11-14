@@ -153,6 +153,7 @@ app.post('/profile', (req, res) => {
 app.post('/signPetition', (req, res) => {
 
     let signature = req.body.img;
+    console.log('signature', signature);
     database.signPetition(signature, req.session.user.id)
     .then(signatureId => {
         req.session.user.signatureId = signatureId;
@@ -163,11 +164,24 @@ app.post('/signPetition', (req, res) => {
 })
 
 app.get('/all', (req, res) => {
-    console.log('////', req.session.user.first);
     database.getSigners().then(signers => {
         res.render('signed', {
             layout: 'main',
             signers: signers
+        })
+    })
+})
+
+app.get('/thank-you', (req, res) => {
+
+    database.getSignature().then(sigsIds => {
+        console.log('=========sigsIds', sigsIds);
+        
+        res.render('thank-you', {
+            layout: 'main',
+            first: req.session.user.first,
+            last: req.session.user.last,
+            signature: req.session.user.signature
         })
     })
 })
