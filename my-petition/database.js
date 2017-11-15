@@ -1,6 +1,5 @@
 const spicedPg = require('spiced-pg');
 const pw = require('./passwords.js');
-var db = spicedPg(dbUrl);
 
 
 if(process.env.DATABASE_URL){
@@ -10,6 +9,7 @@ if(process.env.DATABASE_URL){
     dbUrl = `postgres:${info.username}:${info.password}@localhost:5432/myPetition`
 }
 
+var db = spicedPg(dbUrl);
 
 
 exports.signPetition = (signature, userId) => {
