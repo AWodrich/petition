@@ -3,8 +3,10 @@
     <input type="text" name="city" placeholder="City">
     <input type="number" name="age" placeholder="Age">
     <input type="url" name="url" placeholder="Homepage">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <button>Continue</button>
 </form>
-<form class="" action="logout" method="get">
+<form class="" action="logout" method="post">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <button>Sign out</button>
 </form>

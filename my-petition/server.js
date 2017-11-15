@@ -8,6 +8,20 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require("cookie-session");
 const hb = require('express-handlebars');
 const port = 8080;
+var csrf = require('csurf');
+
+
+
+
+// ========= make webpage secure ==============================
+app.disable('x-powered-by');
+
+// ========= make sure your side cannot being put into a frame =====
+app.use((req, res, next) => {
+    res.setHeader('x-frame-options', 'deny');
+    next();
+});
+
 
 // =====require file that server-side javascript==================
 const database = require('./database.js');
@@ -23,6 +37,7 @@ app.use('/public', express.static("public"));
 
 
 // ====== use cookie, cookie-session and bodyParser ================
+// we need this because "cookie" is true in csrfProtection
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
     extended: false
@@ -31,6 +46,9 @@ app.use(cookieSession({
     secret: 'my secret is a secret that secretly secrets itself',
     maxAge: 1000 * 60 * 60 * 24 * 14
 }));
+
+var csrfProtection = csrf({ cookie: true })
+
 
 // ======== getting the functions that (1) hash the password and (2) compares it to existing passwords in the database
 
@@ -43,23 +61,31 @@ app.get('/', (req, res) => {
     res.redirect('/registration')
 })
 
-app.get('/petition', (req, res) => {
+app.get('/petition',csrfProtection, (req, res) => {
     let first = req.session.user.first;
     let last = req.session.user.last;
+    // pass the csrfToken to the view
     res.render('petition', {
         layout: 'main',
         first,
-        last
+        last,
+        csrfToken: req.csrfToken()
     })
 })
 
-app.get('/registration', (req, res) => {
+app.get('/registration', csrfProtection, (req, res) => {
     res.render('registration', {
-        layout: 'main'
+        layout: 'main',
+        csrfToken: req.csrfToken()
     })
 })
 
-app.get('/logout', (req, res) => {
+app.post('/logout', (req, res) => {
+    req.session = null;
+    res.redirect('/')
+})
+
+app.post('/signers/logout', (req, res) => {
     req.session = null;
     res.redirect('/')
 })
@@ -87,9 +113,10 @@ app.post('/registration', (req, res) => {
     })
 })
 
-app.get('/login', (req, res) => {
+app.get('/login', csrfProtection, (req, res) => {
     res.render('login', {
-        layout: 'main'
+        layout: 'main',
+        csrfToken: req.csrfToken()
     })
 })
 
@@ -113,6 +140,7 @@ app.post('/login', (req, res) => {
                         age,
                         city
                     }
+
                     database.getSignature(id).then(sigsIds => {
                         res.render('thank-you', {
                             layout: 'main',
@@ -133,9 +161,10 @@ app.post('/login', (req, res) => {
     })
 })
 
-app.get('/profile', (req, res) => {
+app.get('/profile', csrfProtection, (req, res) => {
     res.render('profile', {
         layout: 'main',
+        csrfToken: req.csrfToken()
     })
 })
 
@@ -144,8 +173,6 @@ app.post('/profile', (req, res) => {
     let age = req.body.age;
     let url = req.body.url;
     let id = req.session.user.id;
-
-    // console.log('About to create the profile','city:',city,'age:',age,url,id);
 
     if(city || age || url ) {
         database.addingInfo( id, city, age, url).then(() => {
@@ -163,26 +190,25 @@ app.post('/profile', (req, res) => {
 app.post('/signPetition', (req, res) => {
 
     let signature = req.body.img;
-    // console.log('signature', signature);
     database.signPetition(signature, req.session.user.id)
     .then(signatureId => {
         req.session.user.signatureId = signatureId;
-        // console.log('after running signed petition', req.session);
         res.redirect('/thank-you')
 
     })
 })
 
-app.get('/all', (req, res) => {
+app.get('/all', csrfProtection, (req, res) => {
     database.getSigners().then(signers => {
         res.render('signed', {
             layout: 'main',
-            signers: signers
+            signers: signers,
+            csrfToken: req.csrfToken()
         })
     })
 })
 
-app.get('/thank-you', (req, res) => {
+app.get('/thank-you', csrfProtection, (req, res) => {
     console.log('is this the id????', req.session.user.id);
     let id = req.session.user.id;
     database.getSignature(id).then(sigsIds => {
@@ -190,20 +216,22 @@ app.get('/thank-you', (req, res) => {
             layout: 'main',
             first: req.session.user.first,
             last: req.session.user.last,
-            signature: sigsIds[0].signature
+            signature: sigsIds[0].signature,
+            csrfToken: req.csrfToken()
         })
     })
 })
 
 
-app.get('/signers/:city', (req, res) => {
+app.get('/signers/:city', csrfProtection, (req, res) => {
     var city = req.params.city;
     database.getSignersCities(city).then(signersCity => {
         console.log('all users of same city', signersCity);
         res.render('signers-cities', {
             layout: 'main',
             signersCity,
-            city:signersCity[0].city
+            city:signersCity[0].city,
+            csrfToken: req.csrfToken()
         })
 
     }).catch(err => {

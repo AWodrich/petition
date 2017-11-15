@@ -6,6 +6,7 @@
     </ul>
     {{/each}}
 </div>
-<form class="" action="logout" method="get">
+<form class="" action="logout" method="post">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <button>Sign out</button>
 </form>

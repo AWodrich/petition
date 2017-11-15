@@ -10,7 +10,6 @@ exports.signPetition = (signature, userId) => {
 
   return db.query(q, params)
   .then((results) => {
-    //   console.log('results from the query thing', results.rows);
       return results.rows[0].id
   }).catch((err) => {
       console.log(err);
@@ -40,7 +39,6 @@ exports.loginUser = (email, password) => {
             ON users.id = signatures.user_id
             WHERE users.email = $1`;
     return db.query(q,[email]).then(result => {
-        // console.log('inside database loginUser', result.rows);
         return result.rows[0];
     }).catch(err => {
         console.log(err);
@@ -77,7 +75,6 @@ exports.getSigners = () => {
         JOIN user_profiles
         ON user_profiles.user_id=users.id`
     ).then(result => {
-        // console.log('getting all users', result.rows);
         return result.rows;
     }).catch(err => {
         console.log(err);
@@ -93,7 +90,6 @@ exports.getSignature = (id) => {
     return db.query(q,[id])
     .then(userInfosOnSig => {
         return userInfosOnSig.rows
-        // console.log('++++++++getting user info and sig id on thankyou page', userInfosOnSig.rows);
     }).catch(err => {
         console.log(err);
     })
