@@ -1,10 +1,14 @@
 <div class="">
     <p id="thank-you-text">Thank you very much, {{first}} {{last}}, for signing the petition!</p>
     <img src="{{signature}}" alt=""></img>
-    <a href="/all"><button id="goToAll" type="button" name="button">Check out who else signed this petition</button></a>
+    <a href="/all"><button id="goToAll" type="button" name="button">These {{numOfSigs}} people also signed the petition</button></a>
     <a href="/update"><button type="button" name="button">Edit profile</button></a>
 </div>
 <form class="" action="logout" method="post">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <button>Sign out</button>
+</form>
+<form class="" action="delete" method="post">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    <button>Delete Signature</button>
 </form>

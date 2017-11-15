@@ -17,9 +17,10 @@ exports.signPetition = (signature, userId) => {
     var params = [signature, userId];
 
   return db.query(q, params)
-  .then((results) => {
+  .then(results => {
       return results.rows[0].id
-  }).catch((err) => {
+  })
+  .catch((err) => {
       console.log(err);
   });
 };
@@ -38,11 +39,20 @@ exports.registerUser = (first, last, email, hashedPassword) => {
 };
 
 
+// var q = `SELECT user_profiles.city, user_profiles.age, users.email, users.hashed_password, users.id, users.first, signatures.id AS sigId, users.last
+//         FROM users
+//             INNER JOIN signatures
+//                 ON users.id = signatures.user_id
+//             INNER JOIN user_profiles
+//                 ON users.id = user_profiles.user_id
+//         WHERE users.email = $1`;
 
 
 exports.loginUser = (email, password) => {
-    var q = `SELECT email, hashed_password, users.id, users.first, signatures.id AS sigId, users.last
+    console.log('loggin in password hashed?', password, 'email', email);
+    var q = `SELECT users.email, users.hashed_password, users.id, users.first, signatures.id AS sigId, users.last
             FROM users
+
             LEFT JOIN signatures
             ON users.id = signatures.user_id
             WHERE users.email = $1`;
@@ -54,6 +64,7 @@ exports.loginUser = (email, password) => {
 }
 
 exports.addingInfo = (id, city, age, url) => {
+    console.log('in here now?????');
     var q = `SELECT users.id AS id, user_profiles.id AS id
             FROM users
             JOIN user_profiles
@@ -130,17 +141,84 @@ exports.getSignersCities = (city) => {
 }
 
 exports.insertIntoUserProfiles = (city, age, url) => {
-    console.log('getting input value in database file?', city, age, url);
     var q = `INSERT INTO user_profiles(city, age, url)
             VALUES ($1, $2, $3)
             RETURNING city,age,url`
     var params = [city, age, url];
     return db.query(q, params)
     .then(insertedData => {
-        //the user_id!!!! it has to save it also in users!
         return insertedData.rows[0]
-    }).catch(err => {
+    })
+    .catch(err => {
         console.log(err);
     })
-// join tables heres
+}
+
+exports.updateProfile = (id, city, age, url) => {
+    var q = `UPDATE user_profiles
+            SET (city, age, url) = ($2, $3, $4)
+            WHERE user_profiles.user_id = $1
+            RETURNING id, city, age, url`;
+    var params = [id, city, age, url];
+    return db.query(q, params)
+    .then(results =>{
+        return results.rows[0];
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+
+exports.updateUsers = (first, last, email, password, id) => {
+    var q = `UPDATE users
+            SET (first, last, email, hashed_password) = ($1, $2, $3, $4)
+            WHERE id = $5
+            RETURNING first,last,email,hashed_password`;
+    var params = [first, last, email, password, id];
+    return db.query(q, params)
+    .then(updatedData => {
+        return updatedData.rows[0];
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+
+exports.updateHashedPassword = (hashedPassword, id) => {
+    var q = `UPDATE users
+            SET hashed_password = $1
+            WHERE id = $2
+            RETURNING hashed_password`;
+    var params = [hashedPassword, id];
+    return db.query(q, params)
+    .then(hashedPassword => {
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+
+exports.getAllSigners = () => {
+    var q = `SELECT users.id
+            FROM users`
+    return db.query(q)
+    .then(database => {
+        console.log('getting the database lenght?',database.rows.length);
+        return database.rows.length
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+
+exports.deleteSignature = (id) => {
+    var q = `DELETE FROM signatures
+            WHERE user_id = $1`;
+    var params = [id];
+    return db.query(q, params)
+    .then(() => {
+    })
+    .catch(err => {
+        console.log(err);
+    })
 }
