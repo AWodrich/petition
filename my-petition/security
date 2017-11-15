@@ -1,6 +1,0 @@
-dont allow users to input html
-to avoid it type:
- &lt;Script src=&quot
-handlebars does it for you. also angular and react
-
-{{{body}}} we use the tripple so it will be allowed to send html

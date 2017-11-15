@@ -7,8 +7,9 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cookieSession = require("cookie-session");
 const hb = require('express-handlebars');
-const port = 8080;
 var csrf = require('csurf');
+
+
 
 
 
@@ -297,5 +298,7 @@ app.post('/delete', (req, res) => {
 })
 
 //=================== setting up server ========================================//
-
-app.listen(port, () => console.log('Listening on server'));
+// listening on port 8080 unless there is no other environment. if not 8080, then listen to environment.
+// useful when deploying application.
+// if env. is falsy, listen to 8080.
+app.listen(process.env.PORT || 8080, () => console.log('Listening on server'));
