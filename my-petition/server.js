@@ -85,11 +85,6 @@ app.post('/logout', (req, res) => {
     res.redirect('/')
 })
 
-app.post('/signers/logout', (req, res) => {
-    req.session = null;
-    res.redirect('/')
-})
-
 app.post('/registration', (req, res) => {
     let first = req.body.first;
     let last = req.body.last;
@@ -179,7 +174,6 @@ app.post('/profile', (req, res) => {
             req.session.user.city = city;
             req.session.user.age = age;
             req.session.user.url = url;
-            console.log('new session object', req.session.user);
             res.redirect('/petition')
         });
     } else {
@@ -188,7 +182,6 @@ app.post('/profile', (req, res) => {
 })
 
 app.post('/signPetition', (req, res) => {
-
     let signature = req.body.img;
     database.signPetition(signature, req.session.user.id)
     .then(signatureId => {
@@ -209,7 +202,7 @@ app.get('/all', csrfProtection, (req, res) => {
 })
 
 app.get('/thank-you', csrfProtection, (req, res) => {
-    console.log('is this the id????', req.session.user.id);
+    // console.log('is this the id????', req.session.user.id);
     let id = req.session.user.id;
     database.getSignature(id).then(sigsIds => {
         res.render('thank-you', {
@@ -226,7 +219,6 @@ app.get('/thank-you', csrfProtection, (req, res) => {
 app.get('/signers/:city', csrfProtection, (req, res) => {
     var city = req.params.city;
     database.getSignersCities(city).then(signersCity => {
-        console.log('all users of same city', signersCity);
         res.render('signers-cities', {
             layout: 'main',
             signersCity,
@@ -237,6 +229,71 @@ app.get('/signers/:city', csrfProtection, (req, res) => {
     }).catch(err => {
         console.log(err);
     })
+})
+
+app.get('/update', csrfProtection, (req, res) => {
+    var first = req.session.user.first;
+    var last = req.session.user.last;
+    var email = req.session.user.email;
+    if(req.session.user.age || req.session.user.url || req.session.user.city) {
+        res.render('edit', {
+            layout: 'main',
+            first,
+            last,
+            email,
+            age: req.session.user.age,
+            city: req.session.user.city,
+            url: req.session.user.url,
+            csrfToken: req.csrfToken()
+        })
+    } else {
+        res.render('edit', {
+            layout: 'main',
+            first,
+            last,
+            email,
+            csrfToken: req.csrfToken()
+        })
+    }
+})
+
+app.post('/update', (req, res) => {
+    var newFirst = req.body.first;
+    var newLast = req.body.last;
+    var newAge = req.body.age;
+    var newEmail = req.body.email;
+    var newPassword = req.body.password;
+    var newCity = req.body.city;
+    var newUrl = req.body.url;
+
+    if(newAge || newCity || newUrl){
+        if(!req.session.user.age || !req.session.user.city || !req.session.user.url) {
+            database.insertIntoUserProfiles(newCity, newAge, newUrl)
+            .then(newData => {
+                req.session.user.age = newData.age;
+                req.session.user.city = newData.city;
+                req.session.user.url = newData.url;
+                console.log('see updated session object', req.session.user);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
+    } else {
+        console.log('no new input');
+    }
+
+    //check if age, city and url has input. if not, do insert into database
+    //if input do update of database. remeber to join tables!!
+    //password: do not show passowrd in field.
+    //but if password is being changed, hash it!!
+    console.log('post updating');
+})
+
+app.post('/delete', (req, res) => {
+    //delete the signature inside database.
+    //do db.query
+    res.redirect('/petition')
 })
 
 //=================== setting up server ========================================//

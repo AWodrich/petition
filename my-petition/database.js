@@ -52,7 +52,8 @@ exports.addingInfo = (id, city, age, url) => {
             ON users.id = user_profiles.user_id`;
     return db.query(q)
     .then(results => {
-        var q = `INSERT INTO user_profiles (user_id, city, age, url) VALUES ($1, $2, $3, $4)`;
+        var q = `INSERT INTO user_profiles (user_id, city, age, url)
+                VALUES ($1, $2, $3, $4)`;
         var params = [id, city, age, url];
         return db.query(q,params)
         .then(results => {
@@ -118,4 +119,20 @@ exports.getSignersCities = (city) => {
         }).catch(err => {
             console.log(err);
         })
+}
+
+exports.insertIntoUserProfiles = (city, age, url) => {
+    console.log('getting input value in database file?', city, age, url);
+    var q = `INSERT INTO user_profiles(city, age, url)
+            VALUES ($1, $2, $3)
+            RETURNING city,age,url`
+    var params = [city, age, url];
+    return db.query(q, params)
+    .then(insertedData => {
+        //the user_id!!!! it has to save it also in users!
+        return insertedData.rows[0]
+    }).catch(err => {
+        console.log(err);
+    })
+// join tables heres
 }
