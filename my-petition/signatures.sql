@@ -11,7 +11,7 @@ CREATE TABLE signatures (
 
 CREATE TABLE user_profiles (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER,
+    user_id INTEGER not null unique,
     city VARCHAR(300) not null,
     age VARCHAR(300) not null,
     url text not null

@@ -109,6 +109,8 @@ exports.getSignature = (id) => {
             WHERE users.id = $1`
     return db.query(q,[id])
     .then(userInfosOnSig => {
+        // console.log('(((((((((((((((((())))))))))))))))))');
+        // console.log(!userInfosOnSig.rows[0].signature);
         return userInfosOnSig.rows
     }).catch(err => {
         console.log(err);
@@ -134,6 +136,8 @@ exports.getSignersCities = (city) => {
             WHERE user_profiles.city = $1`
     return db.query(q,[city])
         .then(usersCity => {
+            console.log('+++++++++++++++++++++++++++++++++++++++++');
+            console.log('usersCity length', usersCity.rows.length);
             return usersCity.rows;
         }).catch(err => {
             console.log(err);
@@ -212,13 +216,18 @@ exports.getAllSigners = () => {
 }
 
 exports.deleteSignature = (id) => {
+    console.log('id here', id);
     var q = `DELETE FROM signatures
             WHERE user_id = $1`;
     var params = [id];
     return db.query(q, params)
-    .then(() => {
+    .then((data) => {
+        console.log('after deleting', data.rows);
     })
     .catch(err => {
         console.log(err);
     })
 }
+
+
+// exports.getSignature

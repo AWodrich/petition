@@ -1,10 +1,28 @@
-<h2>Registration Form</h2>
+<h1 id="welcomeHead">Stop Rape, Assault and Sexual Harassment of Political Office-Holder</h1>
+<div class="slide-left">
+    <p id="welcomeText">
+        Victims nearly never report incidents of concern.<br>
+        If they do - it destroys them or/and their career.<br>
+        Following harassment allegations, Members of Parliament never face any legal consequences.<br>
+        No disciplinary measures are taken.<br>
+        Existing bodies to prevent harassment remain powerles.<br>
+    </p>
+</div>
+<div class="second-left">
+    <p id="welcomeQuestions">
+        Why does the jurisdiction not apply to those who abuse public office?<br>
+        Why can Political Office-Holders rape, assault and harassass without being prosecuted?
+    </p>
+</div>
+<img id="welcomePic" src="/public/BackgroundImage.jpg" alt="">
 <form class="registration" action="registration" method="post">
-    First Name <input type="text" name="first" value="">
-    Last Name <input type="text" name="last" value="">
-    E-Mail <input type="email" name="email" value="">
-    Password <input type="password" name="password" value="">
-    <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    <button>Sign Up</button>
+     <input class="input" type="text" name="first" value="" placeholder="Enter first name">
+     <input class="input" type="text" name="last" value="" placeholder="Enter last name">
+     <input class="input" type="email" name="email" value="" placeholder="Enter email">
+     <input class="input" type="password" name="password" value="" placeholder="Enter password">
+     <input type="hidden" name="_csrf" value="{{csrfToken}}">
+     <button id="signUpBtn">Sign Up</button>
 </form>
-<a href="login"><button>Login</button></a>
+<div id="registered">
+    Already registered? <a href="login">Login here</a>
+</div>

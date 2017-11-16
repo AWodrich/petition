@@ -7,13 +7,217 @@ canvas {
     background-color: white;
 }
 
-h1 {
-    top: 2px;
+#cross {
+    position: absolute;
+    left: 48%;
+    top: 20px;
+    width: 70px;
+    height: auto;
+}
+
+#mainHead {
+    top: -20px;
+    font-size: 40px;
     position: relative;
     color: black;
     text-align: center;
     z-index: 3;
 }
+/*================== ========= ============== Welcome Page ================ ===============*/
+#welcomeHead {
+    position: absolute;
+    top: 70px;
+    left: 20%;
+    font-size: 40px;
+}
+/*Animation & Styling of Welcome Text1*/
+#welcomeText {
+    z-index: 3;
+    position: relative;
+    text-align: center;
+    line-height: 60px;
+    top: 100px;
+    font-size: 40px;
+}
+
+div.slide-left {
+  width: 100%;
+  overflow: hidden;
+}
+div.slide-left p {
+  animation: slide-left 7s;
+}
+
+@keyframes slide-left {
+  from {
+    margin-left: 100%;
+    width: 300%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
+}
+
+
+/*Animation & Styling of Welcome Questions*/
+
+#welcomeQuestions {
+    z-index: 3;
+    position: relative;
+    text-align: center;
+    line-height: 60px;
+    top: 80px;
+    font-size: 40px;
+}
+
+
+div.second-left { color: transparent; }
+div.second-left:hover { color:black; }
+/* transitions */
+.second-left { }
+.second-left:hover { transition: all ease 2.5s;}
+
+ /* Styling of welcome Pic*/
+#welcomePic {
+    top: 140px;
+    position: absolute;
+    width: 80%;
+    height: auto;
+    z-index: 1;
+    filter:opacity(50%);
+    left: 10%;
+}
+/*Styling of Registration Bar*/
+.registration {
+    z-index: 3;
+    border: 1px solid black;
+    background-color: transparent;
+    position: absolute;
+    top: 800px;
+    left: 30%;
+}
+
+#signUpBtn {
+    background-color: transparent;
+    border: 1px solid black;
+    width: 100px;
+    height: 50px;
+    font-size: 16px;
+}
+
+/*Styling of text bottom*/
+#registered {    z-index: 3;
+    font-size: 20px;
+    position: absolute;
+    left: 42%;
+    bottom: 20px;
+}
+
+
+.input {
+    border: 1px solid black;
+    height: 30px;
+    width: 150px;
+    text-align: center;
+    font-size: 15px;
+}
+
+
+/*========================== Login Page =================================================*/
+
+/* Styling of welcome Pic*/
+#loginPic {
+   top: 140px;
+   position: absolute;
+   width: 80%;
+   height: auto;
+   z-index: 3;
+   filter:opacity(50%);
+   left: 10%;
+}
+/*Headline*/
+#loginHead {
+    position: absolute;
+    top: 70px;
+    left: 43%;
+    font-size: 40px;
+}
+/*Login User*/
+#loginUser {
+    z-index: 3;
+    border: 1px solid black;
+    background-color: transparent;
+    position: absolute;
+    top: 800px;
+    left: 40%;
+}
+
+#loginBtn {
+background-color: transparent;
+border: 1px solid black;
+width: 100px;
+height: 50px;
+font-size: 16px;
+}
+
+
+/*========================================Thank you side========================*/
+#thank-you-text {
+    position: absolute;
+    top: 72px;
+    left: 23%;
+    font-size: 40px;
+}
+
+#signatureImage {
+    /*z-index: 3;*/
+    border: 2px solid black;
+    position: relative;
+    left: 35%;
+    top: 180px;
+    width: 200px;
+    height: 200px;
+    background-color: transparent;
+}
+
+#thank-you-pic {
+    top: 140px;
+    position: absolute;
+    width: 80%;
+    height: auto;
+    /*z-index: 3;*/
+    filter:opacity(50%);
+    left: 10%;
+}
+
+#home {
+    border: 1px solid black;
+    margin-right: 950px;;
+}
+
+.btn {
+    z-index: 3;
+    display: flex;
+    flex-direction: row;
+    font-size: 15px;
+    justify-content: space-around;
+    position: relative;
+    margin: 20px;
+    left: 44%;
+    top: 370px;
+    width: 200px;
+    height: 50px;
+    border: 1px solid black;
+}
+
+
+#canvas {
+    z-index: 3;
+}
+
+
 
 #sign {
     position: relative;
@@ -24,7 +228,7 @@ h1 {
     font-weight: bold;
 }
 
-#text {
+/*#text {
     position: relative;
     color: black;
     top: 230px;
@@ -33,9 +237,9 @@ h1 {
     z-index: 3;
     text-align: center;
     line-height: 50px;
-}
+}*/
 
-#thank-you-text {
+/*#thank-you-text {
     position: relative;
     color: black;
     top: 230px;
@@ -44,7 +248,7 @@ h1 {
     z-index: 3;
     text-align: center;
     line-height: 50px;
-}
+}*/
 
 #layout {
     overflow: hidden;
@@ -62,6 +266,48 @@ h1 {
     z-index: 2;
 }
 
+
+#signPetitionPic {
+    top: -100px;
+    position: relative;
+    width: 98%;
+    height: auto;
+    z-index: 1;
+    filter:opacity(30%);
+    left: 15px;*/
+}
+.user {
+    position: relative;
+    left: 40%;
+    top: -580px;
+    z-index: 3;
+}
+
+
+
+#submit {
+    border: 1px solid black;
+    width: 70px;
+    height: 30px;
+    font-weight: bold;
+    font-size: 15px;
+}
+/*
+#goToAll {
+    position: relative;
+    left: 40%;
+    text-align: center;
+    top: 250px;
+    height: 30px;
+    width: 400px;
+    font-size: 18px;
+}*/
+
+span {
+    font-weight:bolder;
+    text-decoration: underline;
+}
+
 footer {
     position: relative;
     padding: 0.5em;
@@ -72,54 +318,4 @@ nav {
     position: relative;
     padding: 0.5em;
     width: 100%;
-}
-
-img {
-    top: -100px;
-    position: relative;
-    width: 98%;
-    height: auto;
-    z-index: 1;
-    filter:opacity(30%);
-    left: 15px;
-    /*right: 20px;*/
-}
-
-.user {
-    position: relative;
-    left: 40%;
-    top: -580px;
-    z-index: 3;
-}
-
-input {
-    border: 1px solid black;
-    height: 30px;
-    width: 150px;
-    text-align: center;
-    font-size: 15px;
-
-}
-
-#submit {
-    border: 1px solid black;
-    width: 70px;
-    height: 30px;
-    font-weight: bold;
-    font-size: 15px;
-}
-
-#goToAll {
-    position: relative;
-    left: 40%;
-    text-align: center;
-    top: 250px;
-    height: 30px;
-    width: 400px;
-    font-size: 18px;
-}
-
-span {
-    font-weight:bolder;
-    text-decoration: underline;
 }

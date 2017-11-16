@@ -8,7 +8,6 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require("cookie-session");
 const hb = require('express-handlebars');
 const csrf = require('csurf');
-// const popup = require('popups');
 
 
 
@@ -65,7 +64,6 @@ app.get('/', (req, res) => {
 
 app.get('/petition',csrfProtection, (req, res) => {
     console.log('BEFORE PETITION ++++ session object here', req.session.user);
-
     let first = req.session.user.first;
     let last = req.session.user.last;
     // pass the csrfToken to the view
@@ -135,34 +133,37 @@ app.post('/login', (req, res) => {
     var password = req.body.password;
     database.loginUser(email, password).then(userInfo => {
         console.log('userInfo', userInfo);
-        var session = userInfo;
-        console.log('======after logged in', session);
-            pw.checkPassword(password, session.hashed_password).then(doesMatch => {
-                console.log('session???', session);
+        console.log('======after logged in', userInfo);
+            pw.checkPassword(password, userInfo.hashed_password).then(doesMatch => {
+                console.log('session???', userInfo);
                 if(doesMatch) {
-                    // req.session.user.signature = userInfo.sigid;
                     req.session.user = {
-                        signature:session.sigid,
-                        age:session.age,
-                        city:session.city,
-                        first:session.first,
-                        last:session.last,
-                        id:session.id
+                        signature:userInfo.sigid,
+                        age:userInfo.age,
+                        city:userInfo.city.toLowerCase(),
+                        first:userInfo.first,
+                        last:userInfo.last,
+                        id:userInfo.id
                     }
+
                     console.log('++++++session after login', req.session.user);
                     console.log('sig', req.session.user.signature);
                     if(req.session.user.signature) {
                         database.getSignature(req.session.user.id).then(sigsIds => {
-                            res.render('thank-you', {
-                                layout: 'main',
-                                first: req.session.user.first,
-                                last: req.session.user.last,
-                                signature: sigsIds[0].signature
-                            })
+                            res.redirect('/thank-you')
+                            // res.render('thank-you', {
+                            //     layout: 'main',
+                            //     first: req.session.user.first,
+                            //     last: req.session.user.last,
+                            //     signature: sigsIds[0].signature
+                            // })
                         })
                     } else {
-                        res.send(`<p>You have not signed the petition. If you wish so <a href="/petition">click here</a>
-                                    <a href="/all"><button>Check out all signers</button></a>`)
+                        res.redirect('/petition')
+                        // let message = "You have not signed yet. Please sign here."
+
+                        // res.send(`<p>You have not signed the petition. If you wish so <a href="/petition">click here</a>
+                        //             <a href="/all"><button>Check out all signers</button></a>`)
                     }
                 } else {
                     res.redirect('login')
@@ -187,14 +188,14 @@ app.get('/profile', csrfProtection, (req, res) => {
 app.post('/profile', (req, res) => {
     console.log('POST PROFILE ++++ session object here', req.session.user);
 
-    let city = req.body.city;
+    let city = req.body.city.toLowerCase();
     let age = req.body.age;
     let url = req.body.url;
     let id = req.session.user.id;
 
-    if(city || age || url ) {
+    if(city.toLowerCase() || age || url.toLowerCase() ) {
         database.addingInfo( id, city, age, url).then(() => {
-            req.session.user.city = city;
+            req.session.user.city = city.toLowerCase();
             req.session.user.age = age;
             req.session.user.url = url;
             res.redirect('/petition')
@@ -208,6 +209,8 @@ app.post('/signPetition', (req, res) => {
     console.log('AFTER SIGNING PETITION +++ session object here', req.session.user);
 
     let signature = req.body.img;
+
+    console.log('/////////////////////', signature);
     database.signPetition(signature, req.session.user.id)
     .then(signatureId => {
         req.session.user.signatureId = signatureId;
@@ -231,7 +234,10 @@ app.get('/thank-you', csrfProtection, (req, res) => {
     console.log('THANKYOU +++ session object here', req.session.user);
     let id = req.session.user.id;
     database.getSignature(id).then(sigsIds => {
+        console.log('\\\\\\\sigs Id here at thank you',sigsIds);
         database.getAllSigners().then(results => {
+            console.log('results', results);
+            console.log('signature?', sigsIds[0].signature)
             res.render('thank-you', {
                 layout: 'main',
                 numOfSigs: results,
@@ -260,7 +266,7 @@ app.get('/signers/:city', csrfProtection, (req, res) => {
         res.render('signers-cities', {
             layout: 'main',
             signersCity,
-            city: signersCity[0].city,
+            city: signersCity[0].city.toLowerCase(),
             csrfToken: req.csrfToken()
         })
     }).catch(err => {
@@ -278,7 +284,7 @@ app.get('/update', csrfProtection, (req, res) => {
             last: session.last,
             email: session.email,
             age: session.age,
-            city: session.city,
+            city: session.city.toLowerCase(),
             url: session.url,
             csrfToken: req.csrfToken()
         })
@@ -290,7 +296,7 @@ app.post('/update', (req, res) => {
     var newAge = req.body.age;
     var newEmail = req.body.email;
     var newPassword = req.body.password;
-    var newCity = req.body.city;
+    var newCity = req.body.city.toLowerCase();
     var newUrl = req.body.url;
     console.log('POST UPDATE === session object here', req.session.user);
 
@@ -322,7 +328,7 @@ app.post('/update', (req, res) => {
         database.updateProfile(req.session.user.id, valueToUpdate.city, valueToUpdate.age, valueToUpdate.url)
         .then(results => {
             req.session.user.age = results.age;
-            req.session.user.city = results.city;
+            req.session.user.city = results.city.toLowerCase();
             req.session.user.url = results.url;
             res.redirect('/thank-you')
         })
@@ -334,7 +340,7 @@ app.post('/update', (req, res) => {
 
 app.post('/delete', (req, res) => {
     console.log('POST DELETE +++ session object here', req.session.user);
-
+    console.log('id at post delete', req.session.user.id);
     database.deleteSignature(req.session.user.id)
     .then(() => {
         res.redirect('/petition')

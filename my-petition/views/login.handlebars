@@ -1,6 +1,8 @@
-<form class="" action="login" method="post">
-    <input type="text" name="email" placeholder="Enter email">
-    <input type="password" name="password" placeholder="Enter password">
-    <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    <button type="submit">Login</button>
+<h1 id="loginHead">Login Page</h1>
+<img id="loginPic" src="/public/BackgroundImage.jpg" alt="">
+<form id="loginUser" action="login" method="post">
+    <input class="input" type="text" name="email" placeholder="Enter email">
+    <input class="input" type="password" name="password" placeholder="Enter password">
+    <input class="input" type="hidden" name="_csrf" value="{{csrfToken}}">
+    <button id="loginBtn" type="submit">Login</button>
 </form>
