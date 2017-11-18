@@ -1,13 +1,15 @@
-<div class="">
-    <h1>People from {{city}} signed this petition</h1>
+<img id="signersPic" src="/public/images/logo.jpg" alt="">
+
+<div class="signersCity">
+    <h1 id="sigCity">People from {{city}} signed this petition</h1>
     {{#each signersCity}}
     <ul>
-        <li>{{first}} {{last}} ({{age}})</li>
+        <div>{{first}} {{last}} ({{age}})</li>
     </ul>
     {{/each}}
 </div>
 <form class="" action="../logout" method="post">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    <button>Sign out</button>
+    <button class="cityBtnLogout">Sign out</button>
 </form>
-<a id="home" href="/thank-you"><button>Home</button></a>
+<a class="cityBack"href="/signers">Back</a>

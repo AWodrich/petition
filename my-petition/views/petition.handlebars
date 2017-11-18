@@ -1,11 +1,11 @@
+<h1 id="sigHead">Signature Page</h1>
+<img id="signPetitionPic" src="/public/images/euparliament.jpg" alt="">
 <div id="template">
-    <img id="signPetitionPic" src="/public/images/euparliament.jpg" alt="">
-
     <form class="user" action='/petition' method="post">
-        <input id="first" type="text" placeholder="Enter first name" name="first" value="{{first}}">
-        <input id="last" type="text" placeholder="Enter last name" name="last" value="{{last}}">
-        <input type="hidden" name="img">
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <input class="inputPetition" id="first" type="text" placeholder="Enter first name" name="first" value="{{first}}">
+        <input class="inputPetition" id="last" type="text" placeholder="Enter last name" name="last" value="{{last}}">
+        <input class="inputPetition" type="hidden" name="img">
+        <input class="input" type="hidden" name="_csrf" value="{{csrfToken}}">
         <button id="submit">Submit</button>
     </form>
     <p id="sign">Please sign here:</p>

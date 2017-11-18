@@ -32,8 +32,11 @@ router.route('/registration')
           let password = req.body.password;
           let email = req.body.email;
           if(!first || !last || !password || !email) {
-              res.send(`<p>To continue please provide all information!</p>
-                      <a href="/registration"><button>Go to Registration</button></a>`)
+              let error = "Please register to continue"
+              res.render('error', {
+                  layout: 'main',
+                  error
+              })
           } else {
               pw.hashPassword(password).then(hashedPw => {
                   database.registerUser(first, last, email, hashedPw).then(id => {

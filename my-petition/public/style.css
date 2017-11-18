@@ -1,18 +1,12 @@
-canvas {
-    left: 33%;
-    top: -600px;
-    position: relative;
-    border: 4px dotted black;
-    z-index: 3;
-    background-color: white;
-}
+
 
 #cross {
     position: absolute;
     left: 48%;
-    top: 20px;
+    top: 13px;
     width: 70px;
     height: auto;
+    z-index: 3;
 }
 
 #mainHead {
@@ -23,6 +17,24 @@ canvas {
     text-align: center;
     z-index: 3;
 }
+
+
+#layout {
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#template {
+    top:-230px;
+    position: relative;
+    padding: 0.5em;
+    width: 100%;
+    z-index: 2;
+}
+
 /*================== ========= ============== Welcome Page ================ ===============*/
 #welcomeHead {
     position: absolute;
@@ -72,12 +84,28 @@ div.slide-left p {
     font-size: 40px;
 }
 
+@keyframes second-left {
+  from {
+      transition: opacity 1s ease 2s;
+  }
 
-div.second-left { color: transparent; }
-div.second-left:hover { color:black; }
+  to {
+      transition: opacity 1s ease 2s;
+  }
+}
+
+
+div.second-left p {
+  transition: opacity 1s ease 2s;
+}
+
+
+
+/*div.second-left { color: transparent; }
+div.second-left:hover { color:black; }*/
 /* transitions */
-.second-left { }
-.second-left:hover { transition: all ease 2.5s;}
+/*.second-left { }
+.second-left:hover { transition: all ease 2.5s;}*/
 
  /* Styling of welcome Pic*/
 #welcomePic {
@@ -97,6 +125,20 @@ div.second-left:hover { color:black; }
     position: absolute;
     top: 800px;
     left: 30%;
+}
+
+#error {
+    position: relative;
+    left: 40%;
+    z-index: 3;
+    top: 270px;
+    color: red;
+    font-size: 34px;
+    border-bottom: 1px solid red;
+    width: 400px;
+    text-align: center;
+    font-weight: bold;
+    opacity: 0.8;
 }
 
 #signUpBtn {
@@ -121,7 +163,7 @@ div.second-left:hover { color:black; }
     height: 30px;
     width: 150px;
     text-align: center;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 
@@ -166,16 +208,16 @@ font-size: 16px;
 /*========================================Thank you side========================*/
 #thank-you-text {
     position: absolute;
-    top: 72px;
+    top: 70px;
     left: 23%;
     font-size: 40px;
 }
 
 #signatureImage {
-    /*z-index: 3;*/
-    border: 2px solid black;
+    border-bottom: 2px solid black;
+    text-decoration: underline;
     position: relative;
-    left: 35%;
+    left: 36%;
     top: 180px;
     width: 500px;
     height: 150px;
@@ -187,7 +229,6 @@ font-size: 16px;
     position: absolute;
     width: 80%;
     height: auto;
-    /*z-index: 3;*/
     filter:opacity(50%);
     left: 10%;
 }
@@ -201,74 +242,53 @@ font-size: 16px;
     z-index: 3;
     display: flex;
     flex-direction: row;
-    font-size: 15px;
+    font-size: 17px;
+    font-weight: bold;
     justify-content: space-around;
+    margin-top: 20px;
+    background-color: transparent;
     position: relative;
-    margin: 20px;
+    /*margin: 20px;*/
     left: 44%;
-    top: 370px;
+    top: 270px;
     width: 200px;
     height: 50px;
-    border: 1px solid black;
+    border: 2px dotted black;
+    /*background-color: transparent;*/
 }
 
 
-#canvas {
-    z-index: 3;
-}
-
+/*============ petition page =====================*/
 
 
 #sign {
     position: relative;
     top: -580px;
-    left: 45%;
+    text-align: center;
     font-size: 30px;
     z-index: 2;
     font-weight: bold;
 }
 
-/*#text {
+canvas {
+    left: 35%;
+    top: -600px;
     position: relative;
-    color: black;
-    top: 230px;
-    font-size: 35px;
-    font-weight: bold;
+    border: 4px dotted black;
     z-index: 3;
-    text-align: center;
-    line-height: 50px;
+    background-color: #ebeaf0;
 }
 
-#thank-you-text {
+
+#sigHead {
     position: relative;
-    color: black;
-    top: 230px;
-    font-size: 35px;
-    font-weight: bold;
-    z-index: 3;
     text-align: center;
-    line-height: 50px;
-}*/
+    font-size: 40px;
+    top: -65px;
 
-#layout {
-    overflow: hidden;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: space-around;
 }
-
-#template {
-    top:-230px;
-    position: relative;
-    padding: 0.5em;
-    width: 100%;
-    z-index: 2;
-}
-
-
 #signPetitionPic {
-    top: -100px;
+    top: -90px;
     position: relative;
     width: 98%;
     height: auto;
@@ -283,25 +303,184 @@ font-size: 16px;
     z-index: 3;
 }
 
-
-
 #submit {
-    border: 1px solid black;
-    width: 70px;
-    height: 30px;
+    background-color: transparent;
+    border: 2px solid white;
     font-weight: bold;
-    font-size: 15px;
-}
-/*
-#goToAll {
+    width: 100px;
+    height: 50px;
+    font-size: 17px;
     position: relative;
-    left: 40%;
-    text-align: center;
-    top: 250px;
+    left: -20px;
+}
+
+.inputPetition {
+    border: 1px solid white;
     height: 30px;
-    width: 400px;
-    font-size: 18px;
-}*/
+    width: 150px;
+    text-align: center;
+    font-size: 16px;
+    background-color: #ebeaf0;
+    position: relative;
+    font-weight: bold;
+    left: -20px;
+}
+
+
+/*================All Signers Page ==================*/
+
+.signers {
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    top: 100px;
+    font-size: 27px;
+    font-weight: bold;
+    background-color: white;
+    opacity: 0.9;
+    border-radius: 50%;
+    border:1px dotted grey;
+
+}
+
+#signersPic {
+    position: absolute;
+    top: 40px;
+    width: 80%;
+    height: auto;
+    left: 10%;
+
+}
+
+#allSig {
+    position: absolute;
+    top: 70px;
+    left: 45%;
+    font-size: 40px;
+    z-index: 3;
+}
+
+.btnAll {
+    z-index: 3;
+    background-color: transparent;
+    border: 1px solid black;
+    width: 100px;
+    height: 50px;
+    font-size: 17px;
+    text-align: center;
+    position: relative;
+    top: 30px;
+    margin: 10px;
+    font-weight: bold;
+}
+
+.backBtn{
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    width: 100px;
+    height: 50px;
+    font-size: 27px;
+    text-decoration: none;
+    border-bottom: 1px dotted black;
+    left: 10px;
+    top:60px;
+    font-weight: bold;
+    color: black;
+}
+
+
+/*================== Edit Side ===================================*/
+
+.editInput {
+    z-index: 3;
+    position: relative;
+    top: 130px;
+    left: 20%;
+    height: 30px;
+    width: 150px;
+    text-align: center;
+    font-size: 16px;
+    background-color: white;
+    font-weight: bold;
+}
+
+.Editbtn {
+    z-index: 3;
+    display: flex;
+    flex-direction: row;
+    font-size: 17px;
+    font-weight: bold;
+    justify-content: space-around;
+    position: relative;
+    margin: 20px;
+    left: 44%;
+    top: 270px;
+    width: 200px;
+    height: 50px;
+    border: 1px dotted black;
+    background-color: transparent;
+}
+
+
+/*================= Signers City =============================*/
+
+#sigCity {
+    position: absolute;
+    top: -170px;
+    left: 32%;
+    font-size: 40px;
+    z-index: 3;
+}
+
+.signersCity {
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    top: 100px;
+    font-size: 27px;
+    font-weight: bold;
+    background-color: white;
+    opacity: 0.9;
+    border-radius: 50%;
+    border:1px dotted grey;
+}
+
+.cityBtnLogout {
+    z-index: 3;
+    background-color: transparent;
+    border: 1px solid black;
+    width: 100px;
+    height: 50px;
+    font-size: 17px;
+    text-align: center;
+    position: relative;
+    top: 50px;
+    margin: 10px;
+    font-weight: bold;
+}
+
+a {
+    text-decoration: none;
+}
+.cityBack {
+    z-index: 3;
+    background-color: transparent;
+    width: 100px;
+    height: 50px;
+    left: 10px;
+    font-size: 27px;
+    text-align: center;
+    position: relative;
+    top: 80px;
+    font-weight: bold;
+    border-bottom: 1px dotted black;
+    color: black;
+}
+
+
+
+
 
 span {
     font-weight:bolder;
