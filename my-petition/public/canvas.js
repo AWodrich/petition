@@ -1,5 +1,7 @@
 var signed = false;
 var draw = false;
+// var canvas = document.getElementById('canvas');
+
 
 var canvas = document.getElementById('canvas').getContext('2d');
 
@@ -8,7 +10,7 @@ $('#canvas').on('click', function() {
   signed = true;
 });
 
-
+console.log('canvas', $('#canvas'));
 $('#canvas').on('mousedown', function() {
   console.log('mouse goes down');
   draw = true;
@@ -29,7 +31,8 @@ $('#canvas').on('mouseup', function() {
   draw = false;
   console.log('mouse goes up');
   var data = document.getElementById('canvas').toDataURL();
-  $("input[name=signature]").val(data);
+  console.log('data sig?', data);
+  $("input[name=img]").val(data);
 });
 //
 // //Canvas

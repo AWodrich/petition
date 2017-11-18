@@ -50,11 +50,12 @@ exports.registerUser = (first, last, email, hashedPassword) => {
 
 exports.loginUser = (email, password) => {
     console.log('loggin in password hashed?', password, 'email', email);
-    var q = `SELECT users.email, users.hashed_password, users.id, users.first, signatures.id AS sigId, users.last
+    var q = `SELECT users.email, users.hashed_password, users.id, users.first, signatures.id AS sigId, users.last, age, city, url
             FROM users
-
             LEFT JOIN signatures
             ON users.id = signatures.user_id
+            LEFT JOIN user_profiles
+            ON user_profiles.user_id = signatures.user_id
             WHERE users.email = $1`;
     return db.query(q,[email]).then(result => {
         return result.rows[0];
@@ -65,7 +66,7 @@ exports.loginUser = (email, password) => {
 
 exports.addingInfo = (id, city, age, url) => {
     console.log('in here now?????');
-    var q = `SELECT users.id AS id, user_profiles.id AS id
+    var q = `SELECT users.id AS userId, user_profiles.id AS profileId
             FROM users
             JOIN user_profiles
             ON users.id = user_profiles.user_id`;
@@ -133,7 +134,7 @@ exports.getSignersCities = (city) => {
             FROM users
             LEFT JOIN user_profiles
             ON user_profiles.user_id = users.id
-            WHERE user_profiles.city = $1`
+            WHERE LOWER(user_profiles.city) = LOWER($1)`
     return db.query(q,[city])
         .then(usersCity => {
             console.log('+++++++++++++++++++++++++++++++++++++++++');
@@ -173,12 +174,12 @@ exports.updateProfile = (id, city, age, url) => {
     })
 }
 
-exports.updateUsers = (first, last, email, password, id) => {
+exports.updateUsers = (first, last, email, id) => {
     var q = `UPDATE users
-            SET (first, last, email, hashed_password) = ($1, $2, $3, $4)
-            WHERE id = $5
-            RETURNING first,last,email,hashed_password`;
-    var params = [first, last, email, password, id];
+            SET (first, last, email) = ($1, $2, $3)
+            WHERE id = $4
+            RETURNING first,last,email`;
+    var params = [first, last, email, id];
     return db.query(q, params)
     .then(updatedData => {
         return updatedData.rows[0];
@@ -196,6 +197,7 @@ exports.updateHashedPassword = (hashedPassword, id) => {
     var params = [hashedPassword, id];
     return db.query(q, params)
     .then(hashedPassword => {
+
     })
     .catch(err => {
         console.log(err);
