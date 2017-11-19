@@ -1,12 +1,32 @@
+<h1 id="sigHead">Complete Profile</h1>
+<img id="profilePic" src="/public/images/euparliament.jpg" alt="">
+<div class="quotes">
+    <div class="one">
+        <blockquote>"In order to escape accountability for his crimes, the perpetrator does everything in his power to promote forgetting. If secrecy fails, the perpetrator attacks the credibility of his victim. If he cannot silence her absolutely, he tries to make sure no one listen.""</blockquote>
+        <a href="https://www.goodreads.com/author/show/44171.Judith_Lewis_Herman" target="_blank"><cite>[Judith Lewis Herman]</cite></a>
+    </div>
+    <div class="two">
+        <blockquote>“You know... You're still my boss... Which means... This is sexual harassment...
+            Oh really? I guess I’ll have to fire you then.”</blockquote>
+        <cite>[Anonymous]</cite>
+    </div>
+    <div class="three">
+        <blockquote>
+            "We're telling our sons that it's OK to humiliate women. We're telling our daughters that this is how they deserve to be treated. We're telling all our kids that bigotry and bullying are perfectly acceptable in the leader of their country."<br>
+            <br>"If we have a president who routinely degrades women, who brags about sexually assaulting women, then how can we maintain our moral authority in the world?"
+        </blockquote>
+        <a href="http://www.independent.co.uk/news/world/americas/michelle-obama-sexual-harassment-assault-allegations-al-franken-roy-moore-a8063431.html" target="_blank"><cite>[Michelle Obama]</cite></a>
 
+    </div>
+</div>
 <form class="" action="profile" method="post">
-    <input type="text" name="city" placeholder="City">
-    <input type="number" name="age" placeholder="Age">
-    <input type="url" name="url" placeholder="Homepage">
+    <input class="inputProfile" type="text" name="city" placeholder="City">
+    <input class="inputProfile" type="number" name="age" placeholder="Age">
+    <input class="inputProfile" type="url" name="url" placeholder="Homepage">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    <button>Continue</button>
+    <button id="submitProfile">Continue</button>
 </form>
 <form class="" action="logout" method="post">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    <button>Sign out</button>
+    <button id="profileBtn">Sign out</button>
 </form>

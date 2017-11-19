@@ -38,16 +38,6 @@ exports.registerUser = (first, last, email, hashedPassword) => {
     });
 };
 
-
-// var q = `SELECT user_profiles.city, user_profiles.age, users.email, users.hashed_password, users.id, users.first, signatures.id AS sigId, users.last
-//         FROM users
-//             INNER JOIN signatures
-//                 ON users.id = signatures.user_id
-//             INNER JOIN user_profiles
-//                 ON users.id = user_profiles.user_id
-//         WHERE users.email = $1`;
-
-
 exports.loginUser = (email, password) => {
     console.log('loggin in password hashed?', password, 'email', email);
     var q = `SELECT users.email, users.hashed_password, users.id, users.first, signatures.id AS sigId, users.last, age, city, url
@@ -110,8 +100,6 @@ exports.getSignature = (id) => {
             WHERE users.id = $1`
     return db.query(q,[id])
     .then(userInfosOnSig => {
-        // console.log('(((((((((((((((((())))))))))))))))))');
-        // console.log(!userInfosOnSig.rows[0].signature);
         return userInfosOnSig.rows
     }).catch(err => {
         console.log(err);
@@ -223,7 +211,7 @@ exports.deleteSignature = (id) => {
             WHERE user_id = $1`;
     var params = [id];
     return db.query(q, params)
-    .then((data) => {
+    .then(data => {
         console.log('after deleting', data.rows);
     })
     .catch(err => {
@@ -231,5 +219,13 @@ exports.deleteSignature = (id) => {
     })
 }
 
-
-// exports.getSignature
+// exports.getQuotes = () => {
+//     var q = `SELECT FROM quotes`;
+//     return db.query(q)
+//     .then(quoteResults => {
+//         console.log('========all quotes',quoteResults.rows)
+//         return quoteResults.rows;
+//     }).catch(err => {
+//         console.log(err);
+//     })
+// }

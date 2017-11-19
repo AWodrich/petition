@@ -3,9 +3,15 @@
 <div class="signersCity">
     <h1 id="sigCity">People from {{city}} signed this petition</h1>
     {{#each signersCity}}
-    <ul>
-        <div>{{first}} {{last}} ({{age}})</li>
-    </ul>
+        {{#if age.length}}
+            <ul>
+                <div>{{first}} {{last}}, ({{age}})</li>
+            </ul>
+        {{else}}
+        <ul>
+            <div>{{first}} {{last}}</li>
+        </ul>
+        {{/if}}
     {{/each}}
 </div>
 <form class="" action="../logout" method="post">

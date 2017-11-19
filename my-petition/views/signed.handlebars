@@ -2,13 +2,25 @@
 <img id="signersPic" src="/public/images/logo.jpg" alt="">
 <div class="signers">
     {{#each signers}}
-    <ul>
-        <div>{{first}} {{last}} (<a href='/signers/{{city}}'>{{city}}</a>, {{age}})</li>
-    </ul>
+        {{#if city.length}}
+            <ul>
+                <div>{{first}} {{last}} (<a href='/signers/{{city}}'>{{city}})</a></div>
+            </ul>
+        {{else}}
+            {{#if age.length}}
+                <ul>
+                    <div>{{first}} {{last}} (<a href='/signers/{{city}}'>{{city}}</a>, {{age}})</div>
+                </ul>
+            {{else}}
+                <ul>
+                    <div>{{first}} {{last}}</div>
+                </ul>
+            {{/if}}
+        {{/if}}
     {{/each}}
 </div>
 <form class="" action="logout" method="post">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <button class="btnAll">Sign out</button>
 </form>
-<a class="backBtn" href="/thank-you">Back</a>
+<a class="backBtnSigned" href="/thank-you">Back</a>

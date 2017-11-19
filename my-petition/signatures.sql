@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS signatures;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS user_profiles;
+-- DROP TABLE IF EXISTS quotes;
 
 CREATE TABLE signatures (
     id SERIAL PRIMARY KEY,
@@ -25,3 +26,8 @@ CREATE TABLE users (
     hashed_password VARCHAR(300) not null,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- CREATE TABLE quotes (
+--     id SERIAL PRIMARY KEY,
+--     text
+-- )

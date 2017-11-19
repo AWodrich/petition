@@ -2,8 +2,8 @@ var   express = require('express'),
       router = express.Router(),
       csrf = require('csurf'),
       csrfProtection = csrf();
-const pw = require('../passwords.js');
-const database = require('../database.js');
+const pw = require('../passwords');
+const database = require('../database');
 
 
       //=============== routes =======================================================d//
@@ -160,23 +160,25 @@ router.route('/signers')
           })
     });
 
+// 7. Signers by City
+
     router.get('/signers/:city', csrfProtection, (req, res) => {
           console.log('SIGNERS BY CITY====session object here', req.session.user);
           var city = req.params.city;
           database.getSignersCities(city).then(signersCity => {
-              res.render('signers-cities', {
-                  layout: 'main',
-                  signersCity,
-                  city: signersCity[0].city.toLowerCase(),
-                  csrfToken: req.csrfToken()
-              })
+                  res.render('signers-cities', {
+                      layout: 'main',
+                      signersCity,
+                      city: signersCity[0].city.toLowerCase(),
+                      csrfToken: req.csrfToken()
+                  })
           }).catch(err => {
               console.log(err);
           })
     });
 
 
-//  7. Update
+//  8. Update
 
 router.route('/update')
 
@@ -184,16 +186,20 @@ router.route('/update')
           console.log('GET UPDATE session object here', req.session.user);
           var session = req.session.user;
           console.log('here the user_profiles data', session.city );
-          res.render('edit', {
-              layout: 'main',
-              first: session.first,
-              last: session.last,
-              email: session.email,
-              age: session.age,
-              city: session.city,
-              url: session.url,
-              csrfToken: req.csrfToken()
-          })
+        //   database.getQuotes().then(results => {
+              res.render('edit', {
+                  layout: 'main',
+                  first: session.first,
+                  last: session.last,
+                  email: session.email,
+                  age: session.age,
+                  city: session.city,
+                  url: session.url,
+                  csrfToken: req.csrfToken()
+              })
+        //   }).catch(err => {
+            //   console.log(err);
+        //   })
     })
 
     .post((req, res) => {
@@ -207,14 +213,16 @@ router.route('/update')
           console.log('POST UPDATE === session object here', req.session.user);
 
           if(newPassword.length > 0) {
-              var user = req.body;
-              database.updateUsers(user.first, user.last, user.email, req.session.user.id)
+              console.log('length of password', newPassword.length);
+              database.updateUsers(newFirst, newLast, newEmail, req.session.user.id)
               .then(result => {
                   req.session.user.first = result.first;
                   req.session.user.last = result.last;
                   req.session.user.email = result.email;
 
-                  pw.hashPassword(result.hashed_password)
+                  console.log('==============password??', newPassword);
+
+                  pw.hashPassword(newPassword)
                   .then(hash => {
                       return database.updateHashedPassword(hash, req.session.user.id)
                       .then(result => {
@@ -226,6 +234,16 @@ router.route('/update')
                   })
               })
               .catch(err => {
+                  console.log(err);
+              })
+          } else {
+              var user = req.body;
+              database.updateUsers(user.first, user.last, user.email, req.session.user.id)
+              .then(result => {
+                  req.session.user.first = result.first;
+                  req.session.user.last = result.last;
+                  req.session.user.email = result.email;
+              }).catch(err => {
                   console.log(err);
               })
           }
@@ -257,7 +275,7 @@ router.route('/update')
     });
 
 
-//  8. Login
+//  9. Login
 
 router.route('/login')
 
@@ -309,7 +327,7 @@ router.route('/login')
     });
 
 
-//  9. Logout
+//  10. Logout
 
 router.post('/logout', (req, res) => {
     console.log('AFTER LOGOUT ++++ session object here', req.session.user);
@@ -318,7 +336,7 @@ router.post('/logout', (req, res) => {
 });
 
 
-//  10. Delete
+//  11. Delete
 
 router.post('/delete', (req, res) => {
     console.log('POST DELETE +++ session object here', req.session.user);
