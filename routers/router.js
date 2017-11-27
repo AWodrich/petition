@@ -4,7 +4,7 @@ var   express = require('express'),
       csrfProtection = csrf();
 const pw = require('../passwords');
 const database = require('../database');
-const script = require('../public/script')
+// const script = require('../public/script')
 
 
       //=============== routes =======================================================d//
@@ -291,20 +291,15 @@ router.route('/login')
     .post((req, res) => {
           var email = req.body.email;
           var password = req.body.password;
-        //   console.log('++++++', req.body);
           if(!req.body.email || !req.body.password) {
               console.log('in here');
-              script.showHiddenText()
               res.redirect('/login')
           } else {
               database.loginUser(email, password).then(userInfo => {
-                //   console.log('userInfo', userInfo);
-
                   pw.checkPassword(password, userInfo.hashed_password).then(doesMatch => {
-                      //   console.log('session???', req.session);
-                    //   console.log('doesMatch', doesMatch);
-                      if(doesMatch) {
-                        //   console.log('userinfo in if statement',userInfo)
+                      if(!doesMatch) {
+                          console.log('in here');
+                      } else {
                           req.session.user = {
                               signature:userInfo.sigid,
                               age:userInfo.age,
@@ -314,8 +309,6 @@ router.route('/login')
                               id:userInfo.id,
                               email: userInfo.email
                           }
-                        //   console.log('++++++session after login', req.session.user);
-                        //   console.log('sig', req.session.user.signature);
                           if(req.session.user.signature) {
                               database.getSignature(req.session.user.id).then(sigsIds => {
                                   res.redirect('/thank-you')
@@ -323,8 +316,6 @@ router.route('/login')
                           } else {
                               res.redirect('/petition')
                           }
-                      } else {
-                          res.redirect('login')
                       }
                   }).catch(err => {
                       console.log(err);
@@ -332,10 +323,6 @@ router.route('/login')
               }).catch(err => {
                   console.log(err);
               })
-
-
-
-
           }
     });
 
@@ -343,7 +330,6 @@ router.route('/login')
 //  10. Logout
 
 router.post('/logout', (req, res) => {
-    // console.log('AFTER LOGOUT ++++ session object here', req.session.user);
     req.session = null;
     res.redirect('/')
 });
@@ -352,8 +338,6 @@ router.post('/logout', (req, res) => {
 //  11. Delete
 
 router.post('/delete', (req, res) => {
-    // console.log('POST DELETE +++ session object here', req.session.user);
-    // console.log('id at post delete', req.session.user.id);
     database.deleteSignature(req.session.user.id)
     .then(() => {
         res.redirect('/petition')
