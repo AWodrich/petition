@@ -1,4 +1,8 @@
 
+.zoom {
+    zoom: 80%;
+}
+
 #cross {
     position: absolute;
     left: 48%;
