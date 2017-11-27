@@ -1,4 +1,6 @@
 $(body).css({'zoom':'80%'})
+
+
 var showIt = function() {
     var quote = $('#quotePetitionSite');
     console.log('quote', quote);
