@@ -38,15 +38,10 @@
 #welcomeHead {
     position: absolute;
     top: 70px;
-<<<<<<< HEAD
-    left: 20%;
-    font-size: 40px;
-    /*background-color: green;*/
-=======
+
     left: 20%;*/
     /*font-size: 40px;*/
     /*background-color: green;
->>>>>>> 6b4acb241636026a126e20b39813f16df6a2fba8
 }
 /*Animation & Styling of Welcome Text1*/
 #welcomeText {
