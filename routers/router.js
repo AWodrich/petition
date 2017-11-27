@@ -4,6 +4,7 @@ var   express = require('express'),
       csrfProtection = csrf();
 const pw = require('../passwords');
 const database = require('../database');
+const script = require('../public/script')
 
 
       //=============== routes =======================================================d//
@@ -18,7 +19,7 @@ router.get('/', (req, res) => {
 router.route('/registration')
 
     .get(csrfProtection, (req, res) => {
-          console.log('BEFORE REGISTRATION +++ session object here', req.session.user);
+        //   console.log('BEFORE REGISTRATION +++ session object here', req.session.user);
           res.render('registration', {
               layout: 'main',
               csrfToken: req.csrfToken()
@@ -26,7 +27,7 @@ router.route('/registration')
     })
 
     .post((req, res) => {
-          console.log('AFTER REGISTRATION +++ session object here', req.session.user);
+        //   console.log('AFTER REGISTRATION +++ session object here', req.session.user);
           let first = req.body.first;
           let last = req.body.last;
           let password = req.body.password;
@@ -62,7 +63,7 @@ router.route('/registration')
 router.route('/profile')
 
     .get(csrfProtection, (req, res) => {
-          console.log('GET PROFILE ++++ session object here', req.session.user);
+        //   console.log('GET PROFILE ++++ session object here', req.session.user);
 
           res.render('profile', {
               layout: 'main',
@@ -71,7 +72,7 @@ router.route('/profile')
     })
 
     .post((req, res) => {
-          console.log('POST PROFILE ++++ session object here', req.session.user);
+        //   console.log('POST PROFILE ++++ session object here', req.session.user);
 
           let city = req.body.city.toLowerCase();
           let age = req.body.age;
@@ -96,7 +97,7 @@ router.route('/profile')
 router.route('/petition')
 
     .get(csrfProtection, (req, res) => {
-          console.log('BEFORE PETITION ++++ session object here', req.session.user);
+        //   console.log('BEFORE PETITION ++++ session object here', req.session.user);
           let first = req.session.user.first;
           let last = req.session.user.last;
           res.render('petition', {
@@ -108,7 +109,7 @@ router.route('/petition')
     })
 
     .post((req, res) => {
-          console.log('AFTER SIGNING PETITION +++ session object here', req.session.user);
+        //   console.log('AFTER SIGNING PETITION +++ session object here', req.session.user);
           let signature = req.body.img;
           database.signPetition(signature, req.session.user.id)
           .then(signatureId => {
@@ -121,10 +122,10 @@ router.route('/petition')
 //  5.Thank-you Page
 
 router.get('/thank-you', csrfProtection, (req, res) => {
-      console.log('THANKYOU +++ session object here', req.session.user);
+    //   console.log('THANKYOU +++ session object here', req.session.user);
       let id = req.session.user.id;
       database.getSignature(id).then(sigsIds => {
-          console.log('\\\\\\\sigs Id here at thank you',sigsIds);
+        //   console.log('\\\\\\\sigs Id here at thank you',sigsIds);
           database.getAllSigners().then(results => {
               res.render('thank-you', {
                   layout: 'main',
@@ -150,7 +151,7 @@ router.get('/thank-you', csrfProtection, (req, res) => {
 router.route('/signers')
 
     .get(csrfProtection, (req, res) => {
-          console.log('DISPLAY ALL +++ session object here', req.session.user);
+        //   console.log('DISPLAY ALL +++ session object here', req.session.user);
           database.getSigners().then(signers => {
               res.render('signed', {
                   layout: 'main',
@@ -163,7 +164,7 @@ router.route('/signers')
 // 7. Signers by City
 
     router.get('/signers/:city', csrfProtection, (req, res) => {
-          console.log('SIGNERS BY CITY====session object here', req.session.user);
+        //   console.log('SIGNERS BY CITY====session object here', req.session.user);
           var city = req.params.city;
           database.getSignersCities(city).then(signersCity => {
                   res.render('signers-cities', {
@@ -183,9 +184,9 @@ router.route('/signers')
 router.route('/update')
 
     .get(csrfProtection, (req, res) => {
-          console.log('GET UPDATE session object here', req.session.user);
+        //   console.log('GET UPDATE session object here', req.session.user);
           var session = req.session.user;
-          console.log('here the user_profiles data', session.city );
+        //   console.log('here the user_profiles data', session.city );
         //   database.getQuotes().then(results => {
               res.render('edit', {
                   layout: 'main',
@@ -210,17 +211,17 @@ router.route('/update')
           var newPassword = req.body.password;
           var newCity = req.body.city;
           var newUrl = req.body.url;
-          console.log('POST UPDATE === session object here', req.session.user);
+        //   console.log('POST UPDATE === session object here', req.session.user);
 
           if(newPassword.length > 0) {
-              console.log('length of password', newPassword.length);
+            //   console.log('length of password', newPassword.length);
               database.updateUsers(newFirst, newLast, newEmail, req.session.user.id)
               .then(result => {
                   req.session.user.first = result.first;
                   req.session.user.last = result.last;
                   req.session.user.email = result.email;
 
-                  console.log('==============password??', newPassword);
+                //   console.log('==============password??', newPassword);
 
                   pw.hashPassword(newPassword)
                   .then(hash => {
@@ -280,7 +281,7 @@ router.route('/update')
 router.route('/login')
 
     .get(csrfProtection, (req, res) => {
-          console.log('BEFORE LOGIN ++++ session object here', req.session.user);
+        //   console.log('BEFORE LOGIN ++++ session object here', req.session.user);
           res.render('login', {
               layout: 'main',
               csrfToken: req.csrfToken()
@@ -290,13 +291,20 @@ router.route('/login')
     .post((req, res) => {
           var email = req.body.email;
           var password = req.body.password;
-          database.loginUser(email, password).then(userInfo => {
-                console.log('userInfo', userInfo);
-                pw.checkPassword(password, userInfo.hashed_password).then(doesMatch => {
-                    //   console.log('session???', req.session);
-                    console.log('doesMatch', doesMatch);
+        //   console.log('++++++', req.body);
+          if(!req.body.email || !req.body.password) {
+              console.log('in here');
+              script.showHiddenText()
+              res.redirect('/login')
+          } else {
+              database.loginUser(email, password).then(userInfo => {
+                //   console.log('userInfo', userInfo);
+
+                  pw.checkPassword(password, userInfo.hashed_password).then(doesMatch => {
+                      //   console.log('session???', req.session);
+                    //   console.log('doesMatch', doesMatch);
                       if(doesMatch) {
-                         console.log('userinfo in if statement',userInfo)
+                        //   console.log('userinfo in if statement',userInfo)
                           req.session.user = {
                               signature:userInfo.sigid,
                               age:userInfo.age,
@@ -306,10 +314,10 @@ router.route('/login')
                               id:userInfo.id,
                               email: userInfo.email
                           }
-                          console.log('++++++session after login', req.session.user);
-                          console.log('sig', req.session.user.signature);
+                        //   console.log('++++++session after login', req.session.user);
+                        //   console.log('sig', req.session.user.signature);
                           if(req.session.user.signature) {
-                                database.getSignature(req.session.user.id).then(sigsIds => {
+                              database.getSignature(req.session.user.id).then(sigsIds => {
                                   res.redirect('/thank-you')
                               })
                           } else {
@@ -321,16 +329,21 @@ router.route('/login')
                   }).catch(err => {
                       console.log(err);
                   })
-          }).catch(err => {
-              console.log(err);
-          })
+              }).catch(err => {
+                  console.log(err);
+              })
+
+
+
+
+          }
     });
 
 
 //  10. Logout
 
 router.post('/logout', (req, res) => {
-    console.log('AFTER LOGOUT ++++ session object here', req.session.user);
+    // console.log('AFTER LOGOUT ++++ session object here', req.session.user);
     req.session = null;
     res.redirect('/')
 });
@@ -339,8 +352,8 @@ router.post('/logout', (req, res) => {
 //  11. Delete
 
 router.post('/delete', (req, res) => {
-    console.log('POST DELETE +++ session object here', req.session.user);
-    console.log('id at post delete', req.session.user.id);
+    // console.log('POST DELETE +++ session object here', req.session.user);
+    // console.log('id at post delete', req.session.user.id);
     database.deleteSignature(req.session.user.id)
     .then(() => {
         res.redirect('/petition')

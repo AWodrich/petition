@@ -39,7 +39,7 @@ exports.registerUser = (first, last, email, hashedPassword) => {
 };
 
 exports.loginUser = (email, password) => {
-    console.log('loggin in password hashed?', password, 'email', email);
+    // console.log('loggin in password hashed?', password, 'email', email);
     var q = `SELECT users.email, users.hashed_password, users.id, users.first, signatures.id AS sigId, users.last, age, city, url
             FROM users
             LEFT JOIN signatures
@@ -55,7 +55,7 @@ exports.loginUser = (email, password) => {
 }
 
 exports.addingInfo = (id, city, age, url) => {
-    console.log('in here now?????');
+    // console.log('in here now?????');
     var q = `SELECT users.id AS userId, user_profiles.id AS profileId
             FROM users
             JOIN user_profiles
@@ -125,8 +125,8 @@ exports.getSignersCities = (city) => {
             WHERE LOWER(user_profiles.city) = LOWER($1)`
     return db.query(q,[city])
         .then(usersCity => {
-            console.log('+++++++++++++++++++++++++++++++++++++++++');
-            console.log('usersCity length', usersCity.rows.length);
+            // console.log('+++++++++++++++++++++++++++++++++++++++++');
+            // console.log('usersCity length', usersCity.rows.length);
             return usersCity.rows;
         }).catch(err => {
             console.log(err);
@@ -197,7 +197,7 @@ exports.getAllSigners = () => {
             FROM users`
     return db.query(q)
     .then(database => {
-        console.log('getting the database lenght?',database.rows.length);
+        // console.log('getting the database lenght?',database.rows.length);
         return database.rows.length
     })
     .catch(err => {
@@ -206,13 +206,13 @@ exports.getAllSigners = () => {
 }
 
 exports.deleteSignature = (id) => {
-    console.log('id here', id);
+    // console.log('id here', id);
     var q = `DELETE FROM signatures
             WHERE user_id = $1`;
     var params = [id];
     return db.query(q, params)
     .then(data => {
-        console.log('after deleting', data.rows);
+        // console.log('after deleting', data.rows);
     })
     .catch(err => {
         console.log(err);
