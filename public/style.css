@@ -39,8 +39,7 @@
     position: absolute;
     top: 70px;
     left: 20%;
-    /*font-size: 40px;*/
-    background-color: green;
+    background-color: transparent;
 }
 
 /*Animation & Styling of Welcome Text1*/
