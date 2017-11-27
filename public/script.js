@@ -1,8 +1,7 @@
 
-
-function showIt() {
-    var quote = document.getElementById("quotePetitionSite");
-    quote.style.visibility = "visible";
-    quote.style.opacity = "1";
+var showIt = function() {
+    var quote = $('#quotePetitionSite');
+    console.log('quote', quote);
+    quote.css({'visibility':"visible", 'opacity':'1'});
 }
-setTimeout("showIt()", 2000);
+setTimeout(showIt, 2000);
