@@ -38,11 +38,11 @@
 #welcomeHead {
     position: absolute;
     top: 70px;
-    left: 20%;
-    /*font-size: 40px;*/
+
+    left: 20%;*/
+    font-size: 40px;
     background-color: green;
 }
-
 /*Animation & Styling of Welcome Text1*/
 #welcomeText {
     z-index: 3;
