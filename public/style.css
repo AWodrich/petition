@@ -187,9 +187,11 @@ div.slide-left p {
 /*Headline*/
 #loginHead {
     position: absolute;
-    top: 70px;
-    left: 43%;
-    font-size: 40px;
+    top: 100px;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 35px;
 }
 /*Login User*/
 #loginUser {
@@ -330,9 +332,11 @@ cite {
 /*========================================Thank you side========================*/
 #thank-you-text {
     position: absolute;
-    top: 70px;
-    left: 23%;
-    font-size: 40px;
+    top: -40px;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+    font-size: 35px;
 }
 
 #signatureImage {
@@ -371,10 +375,10 @@ cite {
     background-color: white;
     position: relative;
     left: 44%;
-    top: 270px;
+    top: 220px;
     width: 200px;
     height: 50px;
-    border: 2px dotted black;
+    border: 1px dotted black;
 }
 
 
@@ -405,12 +409,14 @@ canvas {
 #sigHead {
     position: relative;
     text-align: center;
-    font-size: 40px;
-    top: -65px;
+    font-size: 35px;
+    top: -40px;
+    margin: 0;
+    width: 100%;
 
 }
 #signPetitionPic {
-    top: -90px;
+    top: -120px;
     position: relative;
     width: 98%;
     height: auto;
@@ -474,13 +480,15 @@ canvas {
     width: 800px;
     height: auto;
     top: 220px;
-    left: 460px;
+    margin: 0;
+    width: 100%;
+    text-align: center;
     font-size: 27px;
     font-weight: bold;
     background-color: white;
     opacity: 0.9;
     border-radius: 50%;
-    border:2px dotted blue;
+    border:1px dotted grey;
 
 }
 
@@ -496,9 +504,12 @@ canvas {
 
 #allSig {
     position: absolute;
-    top: 70px;
-    left: 45%;
-    font-size: 40px;
+    top: 100px;
+    /*left: 45%;*/
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 35px;
     z-index: 3;
 }
 
@@ -538,7 +549,7 @@ canvas {
     z-index: 3;
     position: relative;
     top: 130px;
-    left: 20%;
+    left: 11%;
     height: 30px;
     width: 150px;
     text-align: center;
@@ -557,7 +568,7 @@ canvas {
     justify-content: space-around;
     position: relative;
     margin: 20px;
-    left: 47%;
+    left: 45%;
     top: 170px;
     width: 100px;
     height: 50px;
@@ -570,9 +581,11 @@ canvas {
 
 #sigCity {
     position: absolute;
-    top: -152px;
-    left: 10%;
-    font-size: 40px;
+    top: -120px;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 35px;
     z-index: 3;
 
 }
@@ -581,16 +594,16 @@ canvas {
     position: absolute;
     text-align: center;
     text-decoration: none;
-    width: 800px;
+    width: 100%;
+    margin:0;
     height: auto;
     top: 220px;
-    left: 460px;
     font-size: 27px;
     font-weight: bold;
     background-color: white;
     opacity: 0.9;
     border-radius: 50%;
-    border:2px dotted blue;
+    border:1px dotted grey;
 }
 
 .cityBtnLogout {

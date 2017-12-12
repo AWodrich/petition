@@ -1,4 +1,6 @@
+<nav>
 <h1 id="thank-you-text">Thank you very much, {{first}} {{last}}, for signing the petition!</h1>
+</nav>
 <img id="thank-you-pic" src="/public/images/BackgroundImage.jpg" alt="">
 <div>
     <img id="signatureImage" src="{{signature}}" alt=""></img>
@@ -7,7 +9,7 @@
 </div>
 <form class="" action="logout" method="post">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    <button class="btn">Sign out</button>
+    <button class="btnAll">Sign out</button>
 </form>
 <form class="" action="delete" method="post">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
